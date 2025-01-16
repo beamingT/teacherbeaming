@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>beaming_attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .teacher-input {
+            margin-bottom: 20px;
+        }
+        .student {
+            margin-bottom: 15px;
+        }
+        .attendance-button {
+            padding: 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .attendance-complete {
+            background-color: lightgreen;
+            color: white;
+            border: none;
+        }
+        .writing-input {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+    <script>
+        // 질문을 설정하고 로컬 저장소에 저장
+        function setQuestion() {
+            const question = document.getElementById('teacher-question').value;
+            document.getElementById('question-display').textContent = question;
+            localStorage.setItem('dailyQuestion', question);
+        }
+
+        // 페이지 로드 시 로컬 저장소에서 질문 불러오기
+        function loadQuestion() {
+            const savedQuestion = localStorage.getItem('dailyQuestion');
+            if (savedQuestion) {
+                document.getElementById('question-display').textContent = savedQuestion;
+            }
+
+            const attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || {};
+            for (const [studentId, attended] of Object.entries(attendanceData)) {
+                if (attended) {
+                    const button = document.getElementById(`button-${studentId}`);
+                    if (button) {
+                        button.classList.add('attendance-complete');
+                        button.textContent = '출석완료';
+                        button.disabled = true;
+                    }
+                }
+            }
+        }
+
+        // 출석 버튼 클릭 시 처리
+        function markAttendance(button, studentId) {
+            button.classList.add('attendance-complete');
+            button.textContent = '출석완료';
+            button.disabled = true;
+
+            const attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || {};
+            attendanceData[studentId] = true;
+            localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+        }
+
+        // 페이지가 로드될 때 질문과 출석 데이터를 불러오는 이벤트 추가
+        window.onload = loadQuestion;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>출석 체크 및 아침 글쓰기</h1>
+
+        <!-- 교사용 질문 입력란 -->
+        <div class="teacher-input">
+            <label for="teacher-question">오늘의 글쓰기 주제:</label>
+            <input type="text" id="teacher-question" placeholder="오늘의 질문을 입력하세요" style="width: 100%;">
+            <button onclick="setQuestion()">질문 설정</button>
+        </div>
+
+        <!-- 설정된 질문 표시 -->
+        <div id="question-display" style="margin-bottom: 20px; font-weight: bold; color: #333;">여기에 질문이 표시됩니다.</div>
+
+        <!-- 학생 목록 -->
+        <div id="students">
+            <div class="student" id="student-1">
+                <button id="button-1" class="attendance-button" onclick="markAttendance(this, '1')">1번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-2">
+                <button id="button-2" class="attendance-button" onclick="markAttendance(this, '2')">2번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <!-- 반복해서 학생 추가 -->
+            <div class="student" id="student-3">
+                <button id="button-3" class="attendance-button" onclick="markAttendance(this, '3')">3번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-4">
+                <button id="button-4" class="attendance-button" onclick="markAttendance(this, '4')">4번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-5">
+                <button id="button-5" class="attendance-button" onclick="markAttendance(this, '5')">5번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-6">
+                <button id="button-6" class="attendance-button" onclick="markAttendance(this, '6')">6번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-7">
+                <button id="button-7" class="attendance-button" onclick="markAttendance(this, '7')">7번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-8">
+                <button id="button-8" class="attendance-button" onclick="markAttendance(this, '8')">8번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-9">
+                <button id="button-9" class="attendance-button" onclick="markAttendance(this, '9')">9번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+            <div class="student" id="student-10">
+                <button id="button-10" class="attendance-button" onclick="markAttendance(this, '10')">10번</button>
+                <textarea class="writing-input" placeholder="짧은 글을 작성하세요"></textarea>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
